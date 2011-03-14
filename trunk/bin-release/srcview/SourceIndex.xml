@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<index>
+	<title>Source of test2</title>
+	<nodes>
+		<node label="libs">
+			<node label="AsEval.swc" url="source/libs/AsEval.swc"/>
+		</node>
+		<node label="src">
+			<node icon="mxmlAppIcon" selected="true" label="AsEvalTest.mxml" url="source/AsEvalTest.mxml.html"/>
+		</node>
+	</nodes>
+	<zipfile label="Download source (ZIP, 17K)" url="test2.zip">
+	</zipfile>
+	<sdklink label="Download Flex SDK" url="http://www.adobe.com/go/flex4_sdk_download">
+	</sdklink>
+</index>
