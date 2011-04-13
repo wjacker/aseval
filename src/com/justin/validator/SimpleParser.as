@@ -16,16 +16,28 @@ package com.justin.validator
 			//a+b-(c*d)
 			for(var i:int = 0; i< expr.length; i++)
             {
-            	if(isOperate(expr.charAt(i)))
+                var operate:String = "";
+                var j:int = i;
+                if(i < expr.length - 1 && isOperate(expr.charAt(i) + expr.charAt(i + 1)))
+                {
+                    operate = expr.charAt(i) + expr.charAt(i + 1);
+                    i += 1;
+                }
+                else
+                {
+                    operate = expr.charAt(i)
+                }
+
+            	if(isOperate(operate))
             	{
-                    variableStr = expr.substring(parseString.length, i);
+                    variableStr = expr.substring(parseString.length, j);
             		if(variableStr != "")
                 	{
                         if(!isNaN(Number(variableStr)))
                         {
                             result.push(Number(variableStr));
                         }
-                        else if(expr.charAt(i) == Bracket.LEFT_BRACKET.toString() && isFunction(variableStr))
+                        else if(operate == Bracket.LEFT_BRACKET.toString() && isFunction(variableStr))
                         {
                             var parameterString:String = "(";
                             var count:int = 1;
@@ -48,20 +60,28 @@ package com.justin.validator
                         }
                 	}
                 	parseString = expr.substring(0, i + 1);
-            		if(SimpleOperator.isSimpleOperator(expr.charAt(i)))
+            		if(SimpleOperator.isSimpleOperator(operate))
 	                {
                         if(isPlusOperate(result))
                         {
-                            result.push(new SimpleOperator(expr.charAt(i)+1));
+                            result.push(new SimpleOperator(operate+1));
                         }
                         else
                         {
-                            result.push(new SimpleOperator(expr.charAt(i)));
+                            result.push(new SimpleOperator(operate));
                         }
 	                }
-	                else
+                    else if(Condition.isCondition(operate))
+                    {
+                        result.push(new Condition(operate));
+                    }
+                    else if(LogicalOperator.isLogicalOperator(operate))
+                    {
+                        result.push(new LogicalOperator(operate));
+                    }
+	                else if(Bracket.isBracket(operate))
 	                {
-                        result.push(new Bracket(expr.charAt(i)));
+                        result.push(new Bracket(operate));
 	                }
             	}
             }
@@ -102,23 +122,10 @@ package com.justin.validator
 
 		private function isOperate(s:String):Boolean
         {
-            switch(s)
-            {
-                case "+":
-                case "-":
-                case "*":
-                case "/":
-                case "(":
-                case ")":
-                case ">":
-                case "<":
-                case "=":
-                case "!":
-                case "|":
-                    return true;
-                default:
-                    return false;
-            }
+            return SimpleOperator.isSimpleOperator(s)
+                || Condition.isCondition(s)
+                || LogicalOperator.isLogicalOperator(s)
+                || Bracket.isBracket(s);
         }
 	}
 }

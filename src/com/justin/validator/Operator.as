@@ -12,7 +12,7 @@ package com.justin.validator
 			throw new Error("this method must implement in child");
 		}
 
-	    public function eval(...values):Number
+	    public function eval(...values):*
 	    {
 	    	throw new Error("this method must implement in child");
 	    }

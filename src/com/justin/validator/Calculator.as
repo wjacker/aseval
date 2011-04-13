@@ -7,7 +7,7 @@ package com.justin.validator
         {
         }
 
-        public function eval(postfixExpr:Array, offset:int, len:int, contex:Object):Number
+        public function eval(postfixExpr:Array, offset:int, len:int, ee:ExpressionEvaluator):*
         {
             if (postfixExpr.length - offset < len)
                 throw new Error("Error");
@@ -19,7 +19,7 @@ package com.justin.validator
                 var element:Object = postfixExpr[currPosition++];
                 if (element is Variable)
                 {
-                    stackArr.push(evalVariable(element as Variable, contex));
+                    stackArr.push(evalVariable(element as Variable, ee));
                 }
                 else if(element is ExpressFunction)
                 {
@@ -52,14 +52,24 @@ package com.justin.validator
             return stackArr.pop();
         }
 
-        private function evalVariable(element:Variable, contex:Object):Number
+        private function evalVariable(element:Variable, ee:ExpressionEvaluator):Number
         {
-            if(contex.hasOwnProperty(element.name))
+            if(ee.context && ee.context.hasOwnProperty(element.name))
             {
-                return Number(contex[element.name]);
+                var value:String = ee.context[element.name];
+                if(!isNaN(Number(value)))
+                    return Number(value);
+                else
+                    return ee.eval(value, ee.context);
+            }
+            else if((Math as Object).hasOwnProperty(element.name))
+            {
+                return Number((Math as Object)[element.name]);
             }
             else
+            {
                 throw Error("Error");
+            }
         }
     }
 }

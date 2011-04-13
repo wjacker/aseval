@@ -65,7 +65,10 @@ package com.justin.validator
                 return Number(ee.context[name].apply(null, parameterResultList));
             else if((Math as Object).hasOwnProperty(name))
             {
-                return Number((Math as Object)[name].apply(null, parameterResultList));
+                if((Math as Object)[name] is Function)
+                    return Number((Math as Object)[name].apply(null, parameterResultList));
+                else
+                    return Number((Math as Object)[name]);
             }
 
             else

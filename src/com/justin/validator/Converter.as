@@ -25,6 +25,7 @@ package com.justin.validator
             operatorPriority[">="] = 5;
             operatorPriority["=="] = 6;
             operatorPriority["<>"] = 6;
+            operatorPriority["!="] = 6;
             operatorPriority["&&"] = 7;
             operatorPriority["||"] = 8;
             operatorPriority["?"] = 9;
